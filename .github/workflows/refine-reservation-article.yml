@@ -1,0 +1,91 @@
+name: Refine reservation article
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    if: ${{ github.event.head_commit.message != 'Apply reservation article refinement' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Simplify language and improve article styling
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('posts/reservation-in-india.html')
+          s = p.read_text(encoding='utf-8')
+          replacements = {
+            'Reservation is one of the most emotionally charged questions in the Republic.': 'Reservation is one of the most debated questions in India.',
+            'For some it is the unfinished promise of social justice; for others it looks like a system where birth still decides opportunity.': 'For some, it is part of the continuing promise of social justice; for others, it looks like a system where birth can still affect opportunity.',
+            'Both views hold part of the truth — and the honest question is harder than "for or against."': 'Both views contain part of the truth — and the real question is more complicated than simply being "for or against."',
+            'If reservation was designed to correct historical exclusion, how should the State decide when, where and for whom that corrective mechanism remains necessary in a rapidly changing India?': 'If reservation was created to address historical exclusion, how should the State decide when, where and for whom it is still needed in a changing India?',
+            'Formal equality</b> says everyone gets the same rule. <b>Substantive equality</b> says that sometimes unequal treatment is needed to correct deeply unequal starting conditions.': 'Formal equality</b> means everyone follows the same rule. <b>Substantive equality</b> means that sometimes different support is needed when people start from very different positions.',
+            'The philosophy was never "one community is better" — it was "where historical exclusion produced unequal access, the State may intervene to create real equality of opportunity."': 'The idea was never that "one community is better" — it was that when historical exclusion creates unequal access, the State may step in to create a fairer opportunity.',
+            'should a corrective policy be periodically re-evaluated as society changes?': 'should a corrective policy be reviewed as society changes?',
+            'Enough to demand a rethink, not enough to declare victory': 'Enough to ask for a rethink, not enough to declare victory',
+            'But the paradox is real: reliable nationwide OBC data is still missing, because': 'But a major gap remains: reliable nationwide OBC data is still missing, because',
+            'so "how backward is backward now" is answered more by assumption than evidence in large parts of the system.': 'so the question of how much disadvantage still exists is often discussed without enough evidence.',
+            'Scarcity is where this debate gets personal. Government jobs and elite seats are limited, so any change in allocation creates real winners and real losers.': 'This debate becomes personal because opportunities are limited. Government jobs and elite seats are limited, so changes in how they are distributed create real winners and losers.',
+            'Entrance exams measure performance under one exam system, not ethics, creativity, perseverance or long-run professional skill.': 'Entrance exams measure performance in one exam setting. They do not measure everything that matters in a long professional career, such as ethics, creativity or perseverance.',
+            'Still, if the gap becomes too large, it\'s fair to ask whether the pipeline before admission is doing its job.': 'Still, if the gap becomes too large, it is fair to ask whether the system before admission is working well enough.',
+            'The sustainable fix isn\'t lowering standards indefinitely — it\'s strengthening the pipeline that comes before the exam:': 'The long-term solution is not to lower standards indefinitely — it is to strengthen the system before the exam:',
+            'Reservation rests on substantive equality — but that idea has a danger of its own.': 'Reservation is based on substantive equality — but that idea also creates an important question.',
+            'If a category becomes a permanent political identity rather than a target on measurable disadvantage, a policy meant to correct inequality can start generating a new perception of it.': 'If a category becomes a permanent political identity instead of being linked to measurable disadvantage, a policy meant to reduce inequality can start creating a new sense of unfairness.',
+            'The honest options, laid out without a thumb on the scale': 'The main options, presented without taking sides',
+            'none of them is a strawman.': 'none of them should be treated as an unfair or extreme version of the argument.',
+            'Genuine grievances, amplified by electoral math': 'Genuine grievances, shaped by electoral politics',
+            'A party doesn\'t just compete for votes — it competes for social coalitions, and reservation can become politically valuable to promise or to oppose.': 'A party does not compete only for votes — it also competes for support from different social groups, and reservation can become politically valuable either to support or to oppose.',
+            'The Maratha reservation movement in Maharashtra is a live example:': 'The Maratha reservation movement in Maharashtra is a current example:',
+            'a dispute that is as much about the political economy of scarce seats as it is about backward-class criteria.': 'a dispute that is also about competition for limited seats, as well as about backward-class criteria.',
+            'A mature democracy doesn\'t force citizens to choose between historical justice and contemporary fairness — it pursues periodic, evidence-based review of who still needs the corrective, alongside universal investment in education, health and opportunity for everyone.': 'A mature democracy does not force citizens to choose between historical justice and present-day fairness — it can review who still needs the policy while also investing in education, health and opportunity for everyone.'
+          }
+          for old, new in replacements.items():
+              s = s.replace(old, new)
+
+          css = r'''
+  /* ---------- REFINEMENT OVERRIDE: darker, straighter, cleaner editorial UI ---------- */
+  :root{--paper:#0d0f12;--paper-2:#14171b;--ink:#f2f4f7;--ink-soft:#b8bec8;--stamp-red:#c76b63;--marigold:#d6a04b;--verdict-teal:#5fa89a;--line:rgba(255,255,255,.12);--card:#15191e;--shadow:rgba(0,0,0,.35)}
+  html{background:#0d0f12}
+  body{background:radial-gradient(ellipse at 20% -10%,rgba(214,160,75,.055),transparent 42%),radial-gradient(ellipse at 90% 10%,rgba(95,168,154,.045),transparent 38%),#0d0f12;color:var(--ink)}
+  body::before{background-image:radial-gradient(rgba(255,255,255,.025) 1px,transparent 1px);opacity:.35}
+  h1,h2,h3{color:var(--ink);transform:none!important;rotate:0deg!important;skew:0deg!important}
+  .hero{padding-top:64px}
+  .eyebrow,.file-tab,.verdict-box .stamp{transform:none!important;rotate:0deg!important;skew:0deg!important}
+  .eyebrow{border-color:rgba(199,107,99,.7);color:#df8b82;background:rgba(199,107,99,.05)}
+  .hero h1 em{color:var(--marigold)}
+  .hero p.sub,.byline,section.file p,.source-note,.meta-row,footer{color:var(--ink-soft)}
+  .folder,.author-inner,.toc-inner,.mini-card,.twocol .col,.reform-card,.flow-step,.debate .side,details.simple-toggle{background:var(--card);border-color:var(--line);box-shadow:0 16px 36px -24px var(--shadow)}
+  .folder{border-radius:14px;padding:38px clamp(20px,4vw,48px) 46px}.folder::before{display:none}
+  section.file{margin:56px auto}section.file h2{line-height:1.18;letter-spacing:-.02em}section.file p{font-size:17px;line-height:1.78}section.file p.lead{color:#e3e7ec;font-size:18px;line-height:1.7}
+  .file-tab{border-radius:8px;padding:7px 13px;letter-spacing:1.5px}.tilt-card{transform:none!important}.tilt-card:hover{transform:translateY(-2px)!important}
+  .stat{border-left-color:var(--marigold)}.stat .num,.mini-card .mc-num{color:#f4f6f8}.stat .lbl,.mini-card .mc-lbl{color:var(--ink-soft)}
+  .bar-track{background:#0b0d10;border-color:var(--line)}.flow-step{background:#11151a}.flow-step p{color:#e2e6eb}
+  .case-table th{color:#d4d9e0;border-bottom-color:rgba(255,255,255,.22)}.case-table td{color:var(--ink-soft);border-bottom-color:rgba(255,255,255,.09)}.case-table td.ex{color:#e7ebef}
+  .debate .side.for{background:rgba(95,168,154,.07);border-color:rgba(95,168,154,.35)}.debate .side.against{background:rgba(199,107,99,.06);border-color:rgba(199,107,99,.35)}.debate li,.twocol li,.reform-card p{color:var(--ink-soft)}
+  .verdict-box{background:#07090b;border:1px solid rgba(255,255,255,.14);border-radius:14px}.verdict-box p{color:#cbd1d9}.pull-quote{color:#eef1f4;border-left-color:var(--marigold)}
+  details.simple-toggle{background:#11151a}details.simple-toggle p{color:var(--ink-soft)}.author-photo{border-color:#0d0f12}footer{border-top-color:rgba(255,255,255,.12)}footer a,.toc-list a{color:#dfe4ea}.toc-list a:hover{color:var(--verdict-teal)}.source-note{border-top-color:rgba(255,255,255,.11)}.progress-fill{background:linear-gradient(90deg,var(--marigold),var(--verdict-teal))}a{color:#e6ebf0}::selection{background:var(--marigold);color:#0d0f12}
+  .gauge-tilt{transform:rotateX(10deg)}
+  @keyframes gaugeFloat{0%,100%{transform:rotateX(10deg) translateY(0)}50%{transform:rotateX(7deg) translateY(-4px)}}
+  @media(max-width:760px){.wrap{padding:0 18px}section.file{padding:0 18px;margin:44px auto}.hero{padding:50px 18px 28px}.folder{padding:28px 18px 32px}section.file p{font-size:16.5px;line-height:1.72}section.file p.lead{font-size:17px}.hero h1{font-size:clamp(31px,9vw,44px)}.meta-row{padding:0 18px}.author-card,.toc{padding-left:18px;padding-right:18px}}
+  @media(prefers-reduced-motion:reduce){.gauge-tilt,.needle,.tricolour-particle,.ashoka-chakra{animation:none!important;transform:none!important}.tilt-card,.tilt-card:hover{transform:none!important}}
+'''
+          marker='</style>\n<style>\n  /* ---------- SIMPLE WORDS TOGGLE'
+          if marker not in s: raise SystemExit('CSS insertion point not found')
+          s=s.replace(marker,css+'\n</style>\n<style>\n  /* ---------- SIMPLE WORDS TOGGLE',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add posts/reservation-in-india.html
+          git commit -m "Apply reservation article refinement"
+          git push
