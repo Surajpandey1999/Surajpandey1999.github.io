@@ -1,0 +1,91 @@
+name: Add APA References to AI Article
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  apa:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add citations and APA reference list
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('posts/ai-adoption-india.html')
+          s=p.read_text(encoding='utf-8')
+          if 'id="apa-references-2026"' in s:
+              raise SystemExit('APA references already present')
+
+          replacements={
+          'Stanford\'s 2026 AI Index reports that organisational AI adoption reached 88% in 2025, up from 78% in 2024.': 'Stanford HAI (2026) reports that organisational AI adoption reached 88% in 2025, up from 78% in 2024.',
+          'Microsoft\'s 2026 Work Trend Index offers a useful picture of the next phase.': 'Microsoft (2026) offers a useful picture of the next phase in its Work Trend Index.',
+          'Salesforce\'s 2026 Agentic Workplace Study provides a useful counterweight:': 'Salesforce (2026) provides a useful counterweight:',
+          'The Government of India\'s IndiaAI Mission was approved in March 2024 with an outlay of ₹10,371.92 crore over five years.': 'The Government of India\'s IndiaAI Mission was approved in March 2024 with an outlay of ₹10,371.92 crore over five years (Press Information Bureau [PIB], 2025/2026).',
+          'The ecosystem had onboarded more than 38,000 GPUs, while an additional 20,000 GPUs were announced in 2026': 'Official updates report more than 38,000 GPUs onboarded, while an additional 20,000 GPUs were announced in 2026 (PIB, 2026)',
+          'AIKosh is intended to provide a national layer for datasets, models and development resources. IndiaAI Compute extends access to compute and related services for researchers, students, startups, MSMEs and industry.': 'AIKosh is intended to provide a national layer for datasets, models and development resources, while IndiaAI Compute extends access to compute and related services for researchers, students, startups, MSMEs and industry (IndiaAI, 2026).',
+          'BharatGen was launched in 2025 as a government-funded multimodal initiative focused on Indian languages and contexts. Bhashini, launched in 2022, has similarly built an ecosystem around language technologies across Indian languages.': 'BharatGen was launched in 2025 as a government-funded multimodal initiative focused on Indian languages and contexts, while Bhashini has built an ecosystem around language technologies across Indian languages (PIB, 2026; IndiaAI, 2026).',
+          'The foundation-model component of the IndiaAI Mission has backed multiple Indian teams, including work associated with Sarvam AI and BharatGen.': 'The foundation-model component of the IndiaAI Mission has backed multiple Indian teams, including work associated with Sarvam AI and BharatGen (PIB, 2026).',
+          'The 32% figure comes from Microsoft\'s 2026 Work Trend Index': 'The 32% figure comes from Microsoft\'s (2026) Work Trend Index',
+          'The 2026 workforce evidence comes from Microsoft\'s Work Trend Index': 'The 2026 workforce evidence comes from Microsoft\'s (2026) Work Trend Index',
+          'Government figures come primarily from PIB and IndiaAI Mission material.': 'Government figures come primarily from PIB and IndiaAI Mission material (PIB, 2025, 2026; IndiaAI, 2026).'
+          }
+          for a,b in replacements.items():
+              s=s.replace(a,b)
+
+          refs=r'''
+          <section class="apa-references" id="apa-references-2026">
+            <div class="section-kicker">References</div>
+            <h2>References (APA 7th edition)</h2>
+            <p class="ref-note">Primary and institutional sources are prioritised where available. Web sources are dated to the version or release used for this analysis.</p>
+            <div class="reference-list">
+              <p>IndiaAI. (2026). <em>AIKosh: National AI datasets, models and resources platform</em>. Ministry of Electronics and Information Technology, Government of India. https://indiaai.gov.in/</p>
+              <p>IndiaAI. (2026). <em>IndiaAI Compute</em>. Ministry of Electronics and Information Technology, Government of India. https://indiaai.gov.in/</p>
+              <p>Ministry of Electronics &amp; Information Technology. (2026, February 10). <em>Democratising AI in India: Expanding access to AI resources, skills, and technology nationwide</em>. Press Information Bureau, Government of India. https://www.pib.gov.in/</p>
+              <p>Ministry of Electronics &amp; Information Technology. (2026, February 13). <em>In less than 24 months, India AI Mission has set up a foundation for development of AI ecosystem in the country</em>. Press Information Bureau, Government of India. https://www.pib.gov.in/</p>
+              <p>Ministry of Electronics &amp; Information Technology. (2026, February 17). <em>India to add 20,000 GPUs beyond existing 38,000 to strengthen national AI infrastructure</em>. Press Information Bureau, Government of India. https://www.pib.gov.in/</p>
+              <p>Ministry of Electronics &amp; Information Technology. (2026, March 25). <em>IndiaAI Mission expands AI ecosystem with affordable compute and startup support</em>. Press Information Bureau, Government of India. https://www.pib.gov.in/</p>
+              <p>Ministry of Micro, Small &amp; Medium Enterprises. (2026, July 30). <em>Government of India promotes AI and digital tech adoption to boost MSME productivity</em>. Press Information Bureau, Government of India. https://www.pib.gov.in/</p>
+              <p>Microsoft. (2026, September 3). <em>India's AI advantage is human: Microsoft Work Trend Index 2026 finds India among the world's leading Frontier workforces</em>. Microsoft Source Asia. https://news.microsoft.com/source/asia/2026/09/03/indias-ai-advantage-is-human-microsoft-work-trend-index-2026-finds-india-among-the-worlds-leading-frontier-workforces/</p>
+              <p>Microsoft. (2026). <em>2026 Work Trend Index annual report: Agents, human agency and the opportunity for every organization</em>. https://news.microsoft.com/annual-work-trend-index-2026/</p>
+              <p>Salesforce. (2026, July 30). <em>Agentic Workplace Study</em>. Salesforce News. https://www.salesforce.com/news/stories/agentic-workplace-study/</p>
+              <p>Stanford Institute for Human-Centered Artificial Intelligence. (2026). <em>The 2026 AI Index report</em>. Stanford University. https://hai.stanford.edu/ai-index/2026-ai-index-report</p>
+              <p>Stanford Institute for Human-Centered Artificial Intelligence. (2026). <em>The 2026 AI Index report: Economy</em>. Stanford University. https://hai.stanford.edu/ai-index/2026-ai-index-report/economy</p>
+              <p>Stanford Institute for Human-Centered Artificial Intelligence. (2026). <em>The 2026 AI Index report: Responsible AI</em>. Stanford University. https://hai.stanford.edu/ai-index/2026-ai-index-report/responsible-ai</p>
+            </div>
+            <div class="reference-note"><strong>Source-quality note.</strong> The analysis gives priority to official government releases, primary institutional reports and first-party research publications. News coverage is used for context rather than as the sole basis for headline statistics. Survey percentages retain their original populations and denominators wherever the source makes them explicit.</div>
+          </section>
+          '''
+          marker='<div class="sourcebox"><strong>Research sources &amp; further reading</strong>'
+          idx=s.find(marker)
+          if idx==-1:
+              idx=s.find('<div class="sourcebox">')
+          if idx==-1:
+              raise SystemExit('sourcebox not found')
+          # Insert references immediately before the existing sourcebox.
+          s=s[:idx]+refs+s[idx:]
+
+          css=r'''
+          <style id="apa-reference-style">
+          .apa-references{margin:4rem 0 2rem;padding:2.25rem;border:1px solid rgba(0,0,0,.12);border-radius:18px;background:rgba(255,255,255,.72)}
+          .apa-references h2{margin:.35rem 0 .7rem}
+          .section-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;font-weight:800;opacity:.62}
+          .ref-note{font-size:.92rem;opacity:.72;margin-bottom:1.4rem}
+          .reference-list p{margin:0 0 1rem;padding-left:2rem;text-indent:-2rem;line-height:1.72}
+          .reference-note{margin-top:1.5rem;padding:1rem 1.1rem;border-radius:12px;background:rgba(0,0,0,.045);font-size:.9rem;line-height:1.6}
+          </style>
+          '''
+          s=s.replace('</head>',css+'</head>',1)
+          p.write_text(s,encoding='utf-8')
+          print('APA references and in-text citations added')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add posts/ai-adoption-india.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Add APA 7 citations and stronger source references'
+          git push
