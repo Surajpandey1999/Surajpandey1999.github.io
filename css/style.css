@@ -27,6 +27,13 @@ padding:20px;
 background:#111827;
 }
 
+.site-title{
+font-size:2em;
+font-weight:bold;
+margin:0.67em 0;
+color:inherit;
+}
+
 nav a{
 color:white;
 margin:15px;
