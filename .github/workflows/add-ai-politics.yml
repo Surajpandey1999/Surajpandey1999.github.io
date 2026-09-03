@@ -1,0 +1,38 @@
+name: Add AI article to Politics and Latest
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  update-blog:
+    if: github.event.head_commit.message != 'Add AI article to Politics and Latest'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update blog
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('blog.html')
+          s=p.read_text(encoding='utf-8')
+          card='''            <!-- Politics — Artificial Intelligence adoption in India -->\n            <article class="article-card reveal-up" data-category="politics" data-title="Rapid Artificial Intelligence Adoption Pros Cons and Where Does India Stand">\n                <div class="article-top"><i class="fa-solid fa-microchip"></i></div>\n                <div class="article-body">\n                    <div class="meta"><span class="tag">Politics</span><span>Research · 18 min read</span></div>\n                    <h3>Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?</h3>\n                    <p>A research-based analysis of AI adoption, India's AI initiatives, political implications, AI sovereignty and the geopolitics of artificial intelligence.</p>\n                    <div class="article-footer">\n                        <a href="posts/ai-adoption-india.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>\n                    </div>\n                </div>\n            </article>\n\n'''
+          if 'posts/ai-adoption-india.html' not in s:
+              marker='            <!-- Politics/Policy — Nepal-Himalaya disaster, newest -->'
+              s=s.replace(marker, card+marker, 1)
+          old='''        <article class="featured-card reveal-up" data-category="llm" data-title="Inside a Large Language Model Tokens to Text">'''
+          if old in s:
+              start=s.index(old)
+              end=s.index('\n        </article>', start)+len('\n        </article>')
+              block=s[start:end]
+              new='''        <article class="featured-card reveal-up" data-category="politics" data-title="Rapid Artificial Intelligence Adoption Pros Cons and Where Does India Stand">\n\n            <div class="featured-visual">\n                <canvas id="featuredCanvas"></canvas>\n                <div class="ai-core"><i class="fa-solid fa-microchip"></i></div>\n            </div>\n\n            <div class="featured-content">\n                <div class="meta">\n                    <span class="tag">Politics</span>\n                    <span>03 Sep 2026</span>\n                    <span>•</span>\n                    <span>18 min read</span>\n                </div>\n\n                <h2>Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?</h2>\n\n                <p>AI is becoming an economic, political and geopolitical force. Explore its benefits, risks, India's AI ecosystem, Political Science implications and the global race for AI power.</p>\n\n                <a href="posts/ai-adoption-india.html" class="read-link">\n                    Read Article <i class="fa-solid fa-arrow-right"></i>\n                </a>\n            </div>\n\n        </article>'''
+              s=s[:start]+new+s[end:]
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add blog.html
+          git diff --cached --quiet || git commit -m "Add AI article to Politics and Latest"
+          git push
