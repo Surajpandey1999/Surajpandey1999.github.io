@@ -214,7 +214,9 @@
   .related-grid a:hover{ transform:translateY(-3px); border-color:var(--accent); }
   .related-grid a span{ display:block; margin-top:5px; font-family:var(--mono); font-size:11px; color:var(--muted); font-weight:400; }
 </style>
-</head>
+
+<style id="article-side-nav-v2">.article-side{position:fixed;left:max(14px,calc(50% - 455px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:7px}.article-side a{width:26px;height:26px;display:grid;place-items:center;border:1px solid #ffffff22;border-radius:7px;background:#101827dd;color:#93a2ba;font:11px var(--mono);text-decoration:none}.article-side a:hover{color:var(--accent);border-color:#38bdf855}.author-end{margin-top:55px;padding:24px 0;border-top:1px solid var(--line);text-align:center}.author-end strong{display:block;color:var(--text);font-family:var(--serif);font-size:20px}.author-end small{color:var(--muted)}.author-end .cta{margin-top:15px}@media(max-width:900px){.article-side{left:8px}}@media(max-width:600px){.article-side{position:fixed;left:7px;top:auto;bottom:12px;transform:none;flex-direction:row;background:#080b14dd;padding:5px;border:1px solid #ffffff18;border-radius:10px}.article-side a{width:23px;height:23px;font-size:10px}.author-end{padding-bottom:70px}}
+</style></head>
 <body>
 <div class="wrap">
 
@@ -361,7 +363,7 @@
   <p>The strongest evidence from 2026 points in both directions at once. Indian workers are adopting AI fast, and — importantly — a large share of them still see themselves as responsible for checking what it produces. At the same time, the frequency of failed pilots and the visible gap between access and capability are a reminder that enthusiasm on its own has never been sufficient.</p>
   <p>The strategic question for India, stripped down to its essentials: can the country move from being a large <em>market</em> for AI to being a country that can build, evaluate, govern, and selectively own the capabilities that actually matter?</p>
 
-  <h2>Frequently asked questions</h2>
+  <h2 id="s1">Frequently asked questions</h2>
   <div class="faq">
     <details><summary>Is India leading AI adoption?</summary><p>India ranks among the strongest adopters in several recent workforce measures. Microsoft's 2026 survey classified 32% of surveyed Indian AI users as Frontier Professionals, against 16% globally — but that describes AI-using knowledge workers in the sample, not 32% of India's entire workforce.</p></details>
     <details><summary>How much is India spending on the IndiaAI Mission?</summary><p>The approved outlay is ₹10,371.92 crore over five years.</p></details>
@@ -371,7 +373,7 @@
     <details><summary>What should India focus on next?</summary><p>Combining adoption with research depth, compute access, semiconductor resilience, Indian-language technology, workforce training, independent evaluation, privacy, and accountable deployment.</p></details>
   </div>
 
-  <h2>References (APA 7th edition)</h2>
+  <h2 id="s2">References (APA 7th edition)</h2>
   <p class="fig-note" style="margin:0 0 10px;">Primary and institutional sources are prioritised where available. Web sources are dated to the version or release used for this analysis.</p>
   <ul class="refs">
     <li><i>IndiaAI.</i> (2026). AIKosh: National AI datasets, models and resources platform. Ministry of Electronics and Information Technology, Government of India. <a href="https://indiaai.gov.in/" target="_blank" rel="noopener">indiaai.gov.in</a></li>
@@ -544,5 +546,6 @@
   sections.forEach(h => observer.observe(h));
 })();
 </script>
+<nav class="article-side" aria-label="Article sections"><a href="#s1" aria-label="Section 1">1</a><a href="#s2" aria-label="Section 2">2</a></nav><div class="author-end"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="cta"><a href="/">Home</a><a href="/blog.html">Read More Articles</a></div></div>
 </body>
 </html>
