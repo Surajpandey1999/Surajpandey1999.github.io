@@ -1,0 +1,38 @@
+name: Add article navigation
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  edit:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add only requested UI
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('posts/ai-adoption-india.html'); s=p.read_text()
+          if 'article-side-nav-v2' in s: raise SystemExit(0)
+          css='''\n<style id="article-side-nav-v2">.article-side{position:fixed;left:max(14px,calc(50% - 455px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:7px}.article-side a{width:26px;height:26px;display:grid;place-items:center;border:1px solid #ffffff22;border-radius:7px;background:#101827dd;color:#93a2ba;font:11px var(--mono);text-decoration:none}.article-side a:hover{color:var(--accent);border-color:#38bdf855}.author-end{margin-top:55px;padding:24px 0;border-top:1px solid var(--line);text-align:center}.author-end strong{display:block;color:var(--text);font-family:var(--serif);font-size:20px}.author-end small{color:var(--muted)}.author-end .cta{margin-top:15px}@media(max-width:900px){.article-side{left:8px}}@media(max-width:600px){.article-side{position:fixed;left:7px;top:auto;bottom:12px;transform:none;flex-direction:row;background:#080b14dd;padding:5px;border:1px solid #ffffff18;border-radius:10px}.article-side a{width:23px;height:23px;font-size:10px}.author-end{padding-bottom:70px}}\n</style>'''
+          hs=re.findall(r'<h2(?:\\s[^>]*)?>(.*?)</h2>',s,re.S)
+          if len(hs)>=1:
+            for i,t in enumerate(hs,1):
+              old=f'<h2>{t}</h2>'
+              new=f'<h2 id="s{i}">{t}</h2>'
+              s=s.replace(old,new,1)
+            n=min(len(hs),12)
+            nav='<nav class="article-side" aria-label="Article sections">'+''.join(f'<a href="#s{i}" aria-label="Section {i}">{i}</a>' for i in range(1,n+1))+'</nav>'
+            s=s.replace('</body>',nav+'''<div class="author-end"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="cta"><a href="/">Home</a><a href="/blog.html">Read More Articles</a></div></div>\n</body>''',1)
+            s=s.replace('</head>',css+'</head>',1)
+            p.write_text(s)
+          else: raise SystemExit('No h2 found')
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add posts/ai-adoption-india.html
+          git diff --cached --quiet || git commit -m 'Add compact article navigation and author footer'
+          git push
