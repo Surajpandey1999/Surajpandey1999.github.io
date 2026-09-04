@@ -167,7 +167,53 @@
     backdrop-filter:blur(3px);
   }
   @media(prefers-reduced-motion: reduce){ .hero-net canvas{ display:none; } }
-.research-update{margin:72px 0 30px}.research-update h2{margin-top:18px}.research-update .card{margin:24px 0}.research-update .sourcebox{margin-top:28px}.research-update .sourcebox a{display:block;margin:7px 0}@media(max-width:520px){.research-update{margin-top:50px}}.research-update{margin:72px 0 30px}.research-update h2{margin-top:18px}.research-update .card{margin:24px 0}.research-update .sourcebox{margin-top:28px}.research-update .sourcebox a{display:block;margin:7px 0}@media(max-width:520px){.research-update{margin-top:50px}}</style>
+
+  /* ---- left-side numbered section nav ---- */
+  .article-side{
+    position:fixed; left:max(14px, calc(50% - 620px)); top:50%;
+    transform:translateY(-50%);
+    z-index:15; display:flex; flex-direction:column; gap:7px;
+  }
+  .article-side a{
+    width:30px; height:30px; display:grid; place-items:center;
+    border:1px solid #38bdf855; border-radius:9px; background:#0b1220e0;
+    color:#9bdcff; font:600 11px var(--mono); text-decoration:none;
+    box-shadow:0 5px 18px #0006; transition: transform .18s ease, border-color .18s, color .18s;
+  }
+  .article-side a:hover, .article-side a.active{
+    transform:translateX(4px); border-color:var(--accent); color:#fff;
+    box-shadow:0 5px 22px #38bdf855;
+  }
+  @media(max-width:1080px){ .article-side{ display:none; } }
+  @media(prefers-reduced-motion:reduce){ .article-side a{ transition:none; } }
+
+  /* ---- bottom: author identity + related articles ---- */
+  .author-end{
+    margin:56px 0 0; padding:26px; border:1px solid var(--line); border-radius:16px;
+    background: linear-gradient(160deg, var(--surface), #0c1220); text-align:center;
+  }
+  .author-end img{ width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); }
+  .author-end strong{ display:block; margin:10px 0 3px; font-family:var(--serif); font-size:17px; font-weight:600; }
+  .author-end small{ color:var(--muted); font-family:var(--mono); font-size:11.5px; }
+  .author-links{ display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:16px; }
+  .author-links a{
+    padding:9px 14px; border:1px solid var(--line); border-radius:9px;
+    font:12px var(--mono); color:var(--text); transition: border-color .2s, color .2s;
+  }
+  .author-links a:hover{ border-color:var(--accent); color:var(--accent); text-decoration:none; }
+
+  .related-end{ margin-top:36px; }
+  .related-end h3{ font-family:var(--serif); font-size:18px; font-weight:600; margin:0 0 14px; text-align:center; }
+  .related-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  @media(max-width:600px){ .related-grid{ grid-template-columns:1fr; } }
+  .related-grid a{
+    display:block; padding:16px; border:1px solid var(--line); border-radius:12px;
+    background:var(--surface); color:var(--text); font-family:var(--sans); font-size:14px; font-weight:600;
+    text-decoration:none; transition: transform .2s, border-color .2s;
+  }
+  .related-grid a:hover{ transform:translateY(-3px); border-color:var(--accent); }
+  .related-grid a span{ display:block; margin-top:5px; font-family:var(--mono); font-size:11px; color:var(--muted); font-weight:400; }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -259,7 +305,7 @@
   <p>India's strategic question isn't whether to wall itself off from global AI — that would be neither realistic nor useful. The more sensible goal is optionality: using the best available external model when that's the pragmatic choice, while keeping enough domestic capability in reserve to protect critical applications, properly support Indian languages, and avoid becoming overly dependent on a small handful of foreign providers.</p>
   <p>The foundation-model arm of the IndiaAI Mission has already backed several Indian teams, including work associated with Sarvam AI and BharatGen. BharatGen launched in 2025 as a government-funded multimodal initiative built around Indian languages and contexts, while Bhashini has grown an ecosystem of language technologies spanning multiple Indian languages. These efforts deserve to be judged on evidence rather than branding — benchmark performance, reliability, inference cost, data governance, language coverage, robustness under real conditions, and actual adoption all matter far more than a launch announcement.</p>
 
-  <h2>10. Why AI matters to Political Science</h2>
+  <h2 id="s10">10. Why AI matters to Political Science</h2>
   <p>AI functions as a political institution now, not merely a technical tool. Governments set procurement rules, data standards and liability regimes. Platforms shape which information citizens actually encounter. Automated systems can gate access to public services. Political campaigns increasingly use synthetic media and finely targeted messaging. At the same time, AI is quietly redistributing expertise between the state, private firms, and citizens themselves — a shift political science is well positioned to study, because it's fundamentally a question about power, not code.</p>
   <p>That framing raises at least four questions worth asking of any AI deployment: who controls the underlying computational infrastructure; who sets the rules governing data and models; who bears the cost when an automated decision goes wrong; and whether citizens can meaningfully challenge a system they have no real way to inspect. A model's interface can look neutral while the institutions that chose its data, objectives, access rules and accountability mechanisms shape every consequence that follows — neutrality of interface is not neutrality of outcome.</p>
 
@@ -269,7 +315,7 @@
     <div class="ai-node">◉ GEOPOLITICS</div>
   </div>
 
-  <h2>11. AI and the new geopolitics</h2>
+  <h2 id="s11">11. AI and the new geopolitics</h2>
   <p>AI capability is increasingly inseparable from computing hardware, energy supply, data, advanced semiconductors, cloud infrastructure, research talent and capital — together forming what's best described as a strategic stack. Countries that control multiple layers of that stack gain disproportionate room to set standards, protect critical systems, and shape global technology markets on their own terms.</p>
 
   <!-- ANIMATED 3D VISUAL 2: AI CORE REPEATED FOR THE GEOPOLITICAL STACK -->
@@ -282,11 +328,11 @@
 
   <p>For India, this doesn't mean matching the largest AI powers category for category — an unrealistic and probably wasteful goal. It means identifying which layers are simultaneously strategically important and economically realistic to build: compute access, semiconductor resilience, research institutions, open technical ecosystems, Indian-language capability, public-interest datasets, and trusted independent evaluation.</p>
 
-  <h2>12. AI sovereignty without technological isolation</h2>
+  <h2 id="s12">12. AI sovereignty without technological isolation</h2>
   <p>"Sovereign AI" gets misread constantly as a mandate to build every component domestically. A more useful working definition is strategic agency — the ability to understand, audit, and switch away from critical technologies rather than being locked into one provider or one foreign infrastructure chain by default.</p>
   <p>For India, that sovereignty can be layered rather than absolute. Domestic models matter most for selected public and linguistic use cases. Open models reduce switching costs across the board. Public compute broadens who can actually do research. Strong procurement rules prevent vendor lock-in before it happens. Independent evaluation reveals exactly where a system works and where it quietly doesn't.</p>
 
-  <h2>13. Four plausible futures</h2>
+  <h2 id="s13">13. Four plausible futures</h2>
   <div class="scenario-grid">
     <div class="scenario"><h4>Scenario A — Assisted productivity</h4><p>AI stays primarily a co-pilot. People keep decision responsibility while routine knowledge work simply gets faster.</p></div>
     <div class="scenario"><h4>Scenario B — Agentic organisations</h4><p>AI systems begin coordinating multi-step workflows on their own, with humans supervising exceptions, risk, and final calls.</p></div>
@@ -294,7 +340,7 @@
     <div class="scenario"><h4>Scenario D — Strategic competition</h4><p>AI becomes a core axis of economic and national-security competition, raising the stakes on chips, compute, energy, standards and cyber resilience.</p></div>
   </div>
 
-  <h2>14. What India should prioritise</h2>
+  <h2 id="s14">14. What India should prioritise</h2>
   <ol>
     <li><b>Measure outcomes, not excitement.</b> Public programmes and corporate deployments should report quality, cost, time and reliability changes wherever that's possible to track.</li>
     <li><b>Build verification into the workflow itself.</b> High-impact decisions need traceability, human review, and a clear escalation path — not as an afterthought, but as a design requirement.</li>
@@ -305,11 +351,11 @@
     <li><b>Prepare workers for redesign, not replacement.</b> Education should teach AI literacy, domain expertise, verification and problem-solving — not treat AI as a shortcut around learning the underlying skill.</li>
   </ol>
 
-  <h2>15. How this analysis was audited</h2>
+  <h2 id="s15">15. How this analysis was audited</h2>
   <p>This piece deliberately separates three kinds of evidence: official Indian government figures, independent industry research, and the broader research literature. Statistics keep their original denominator wherever the source makes that explicit. Projections are labelled as projections, not outcomes. Announced infrastructure is described as announced, not deployed, until official figures confirm otherwise. India-specific findings are never presented as global findings, and global adoption measures are never presented as India-only ones — a discipline that matters more than it sounds, because most of the misleading AI statistics in public circulation come from exactly this kind of conflation.</p>
   <p>The core 2026 workforce evidence comes from Microsoft's Work Trend Index, based on a survey of 20,000 full-time employed or self-employed knowledge workers who use AI at work, across ten markets, with 2,000 respondents per market in the core wave. Government figures come primarily from PIB and IndiaAI Mission material. None of this eliminates uncertainty — no single survey or press release ever does — but it does reduce the risk of turning one headline statistic into a stronger claim than its source actually supports.</p>
 
-  <h2>16. The verdict</h2>
+  <h2 id="s16">16. The verdict</h2>
   <p>India isn't standing at the starting line of the AI race — it's already well into large-scale adoption, backed by a substantial technology workforce, mature digital public infrastructure, and a national mission actively expanding compute, skills, datasets, models and responsible-AI capacity.</p>
   <p>But adoption is not the finish line, and treating it as one is the most common mistake in how this story gets told. The harder test is whether India can convert genuinely widespread use into durable capability: stronger domestic research, reliable infrastructure it controls, Indian-language systems that actually work, measurable productivity gains, and institutions capable of governing AI once the stakes get high enough to matter.</p>
   <p>The strongest evidence from 2026 points in both directions at once. Indian workers are adopting AI fast, and — importantly — a large share of them still see themselves as responsible for checking what it produces. At the same time, the frequency of failed pilots and the visible gap between access and capability are a reminder that enthusiasm on its own has never been sufficient.</p>
@@ -351,7 +397,31 @@
     <p style="margin-top:22px;">Research · Policy · Content — Suraj Pandey writes research-led explainers on technology, governance and society.</p>
   </footer>
 
+  <!-- Author identity + related articles + read-more (bottom, single clean block) -->
+  <div class="author-end">
+    <img src="/images/profile.jpg" alt="Suraj Pandey">
+    <strong>Suraj Pandey</strong>
+    <small>Political Science · AI · Technology &amp; Geopolitics</small>
+    <div class="author-links">
+      <a href="/">Home</a>
+      <a href="/">My Identity</a>
+      <a href="/blog.html">Read More Articles</a>
+    </div>
+  </div>
+
+  <section class="related-end" aria-label="Related articles">
+    <h3>Related Articles</h3>
+    <div class="related-grid">
+      <a href="/posts/agentic-ai.html">Agentic AI<span>How autonomous AI systems work</span></a>
+      <a href="/posts/genai-prompts-production.html">Generative AI<span>Prompts in production</span></a>
+      <a href="/posts/deep-learning-fundamentals.html">Deep Learning<span>Fundamentals explained</span></a>
+    </div>
+  </section>
+
 </div>
+
+<!-- Left-side numbered section navigator: 1, 2, 3 ... auto-built from every numbered h2 -->
+<nav class="article-side" id="articleSide" aria-label="Article sections"></nav>
 
 <script>
 // ---- headline-area particle network animation ----
@@ -438,6 +508,41 @@
 })();
 
 // ---- ai3d visuals already animate via pure CSS, no JS needed ----
+
+// ---- left sidebar: build numbered links from every id="sN" heading ----
+(function buildArticleSideNav(){
+  const nav = document.getElementById('articleSide');
+  if(!nav) return;
+
+  const sections = Array.from(document.querySelectorAll('h2[id^="s"]'))
+    .filter(h => /^s\d+$/.test(h.id))
+    .sort((a,b) => parseInt(a.id.slice(1)) - parseInt(b.id.slice(1)));
+
+  if(!sections.length) return;
+
+  const links = sections.map((h, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = String(i + 1);
+    a.title = h.textContent.replace(/^\d+\.\s*/, '').trim();
+    nav.appendChild(a);
+    return { link: a, target: h };
+  });
+
+  // highlight the link for whichever section is currently in view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const match = links.find(l => l.target === entry.target);
+      if(!match) return;
+      if(entry.isIntersecting){
+        links.forEach(l => l.link.classList.remove('active'));
+        match.link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(h => observer.observe(h));
+})();
 </script>
-<style id="article-side-nav-v1">.article-side{position:fixed;left:max(12px,calc(50% - 620px));top:42%;z-index:5;display:flex;flex-direction:column;gap:7px}.article-side a{width:30px;height:30px;display:grid;place-items:center;border:1px solid #38bdf855;border-radius:8px;background:#0b1220dd;color:#9bdcff;font:10px var(--mono);box-shadow:0 5px 18px #0005}.article-side a:hover{transform:translateX(3px);text-decoration:none}@media(max-width:1050px){.article-side{display:none}}.author-end{margin:48px 0 0;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-align:center}.author-end img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}.author-end strong{display:block;margin:8px 0 3px}.author-end small{color:var(--muted)}.author-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.author-links a{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:11px var(--mono)}</style><nav class="article-side" aria-label="Article sections"><a href="#s1">1</a><a href="#s2">2</a><a href="#s3">3</a><a href="#s4">4</a><a href="#s5">5</a><a href="#s6">6</a><a href="#s7">7</a><a href="#s8">8</a><a href="#s9">9</a></nav><div class="author-end"><img src="/images/profile.jpg" alt="Suraj Pandey"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="author-links"><a href="/">Home</a><a href="/blog.html">Read More Articles</a><a href="/">My Identity</a></div></div><style id="article-side-nav-v2">.article-side{position:fixed;left:max(10px,calc(50% - 620px));top:42%;z-index:20;display:flex;flex-direction:column;gap:6px}.article-side a{width:28px;height:28px;display:grid;place-items:center;border:1px solid #38bdf855;border-radius:8px;background:#0b1220e8;color:#9bdcff;font:10px var(--mono);box-shadow:0 5px 18px #0005;transition:.2s}.article-side a:hover{transform:translateX(3px);text-decoration:none;border-color:#38bdf8}.author-end{margin:52px 0 0;padding:24px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-align:center}.author-end img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}.author-end strong{display:block;margin:8px 0 3px}.author-end small{color:var(--muted)}.author-links,.related-grid{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.author-links a,.related-grid a{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:11px var(--mono)}.related-end{margin-top:34px}.related-end h3{margin-bottom:10px}.related-grid a{color:var(--text);background:var(--surface)}@media(max-width:1050px){.article-side{display:none}}@media(prefers-reduced-motion:reduce){.article-side a{transition:none}}</style><nav class="article-side" aria-label="Article section navigation"></nav><section class="related-end" aria-label="Related articles"><h3>Related Articles</h3><div class="related-grid"><a href="/posts/agentic-ai.html">Agentic AI</a><a href="/posts/genai-prompts-production.html">Generative AI</a><a href="/posts/deep-learning-fundamentals.html">Deep Learning</a><a href="/blog.html">All Articles</a></div></section><div class="author-end"><img src="/images/profile.jpg" alt="Suraj Pandey"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="author-links"><a href="/">Home</a><a href="/">My Identity</a><a href="/blog.html">Read More Articles</a></div></div><script id="article-side-nav-js-v2">(()=>{const n=document.querySelector('.article-side');if(!n)return;document.querySelectorAll('h2').forEach((h,i)=>{if(i>8)return;if(!h.id)h.id='article-section-'+(i+1);const a=document.createElement('a');a.href='#'+h.id;a.textContent=i+1;a.title=h.textContent.trim();n.appendChild(a)})})();</script></body>
+</body>
 </html>
