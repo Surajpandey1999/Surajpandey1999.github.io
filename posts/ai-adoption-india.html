@@ -275,7 +275,9 @@
   }
   .share-row a:hover, .share-row button:hover{ background:var(--accent-dim); text-decoration:none; }
 </style>
-</head>
+
+<style id="article-side-nav-v2">.article-side{position:fixed;left:max(14px,calc(50% - 455px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:7px}.article-side a{width:26px;height:26px;display:grid;place-items:center;border:1px solid #ffffff22;border-radius:7px;background:#101827dd;color:#93a2ba;font:11px var(--mono);text-decoration:none}.article-side a:hover{color:var(--accent);border-color:#38bdf855}.author-end{margin-top:55px;padding:24px 0;border-top:1px solid var(--line);text-align:center}.author-end strong{display:block;color:var(--text);font-family:var(--serif);font-size:20px}.author-end small{color:var(--muted)}.author-end .cta{margin-top:15px}@media(max-width:900px){.article-side{left:8px}}@media(max-width:600px){.article-side{position:fixed;left:7px;top:auto;bottom:12px;transform:none;flex-direction:row;background:#080b14dd;padding:5px;border:1px solid #ffffff18;border-radius:10px}.article-side a{width:23px;height:23px;font-size:10px}.author-end{padding-bottom:70px}}
+</style></head>
 <body>
 <div id="readProgress"></div>
 <div class="wrap">
@@ -506,7 +508,7 @@
   <p class="muted">Future research directions this analysis suggests: sector-disaggregated longitudinal panels tracking the same organisations across adoption and value stages; platform-agnostic measurement of agentic AI usage; and causal (not only correlational) study designs isolating AI's productivity contribution from concurrent variables like remote work and macroeconomic conditions.</p>
 
 
-  <h2>Frequently asked questions</h2>
+  <h2 id="s1">Frequently asked questions</h2>
   <div class="faq">
     <details><summary>Is India leading AI adoption?</summary><p>India ranks among the strongest adopters in several recent workforce measures. Microsoft's 2026 survey classified 32% of surveyed Indian AI users as Frontier Professionals, against 16% globally — but that describes AI-using knowledge workers in the sample, not 32% of India's entire workforce.</p></details>
     <details><summary>How much is India spending on the IndiaAI Mission?</summary><p>The approved outlay is ₹10,371.92 crore over five years.</p></details>
@@ -522,7 +524,7 @@
     <div class="cite-line" id="citeMla"><b>MLA</b><span>Pandey, Suraj. "Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?" <i>Suraj Pandey</i>, 4 Sept. 2026, surajpandey1999.github.io/posts/ai-adoption-india.html.</span><button onclick="navigator.clipboard.writeText(document.getElementById('citeMla').innerText.replace('Copy',''))">Copy</button></div>
   </div>
 
-  <h2>References (APA 7th edition)</h2>
+  <h2 id="s2">References (APA 7th edition)</h2>
   <p class="fig-note" style="margin:0 0 10px;">Primary and institutional sources are prioritised where available. Web sources are dated to the version or release used for this analysis.</p>
   <ul class="refs">
     <li><i>IndiaAI.</i> (2026). AIKosh: National AI datasets, models and resources platform. Ministry of Electronics and Information Technology, Government of India. <a href="https://indiaai.gov.in/" target="_blank" rel="noopener">indiaai.gov.in</a></li>
@@ -710,5 +712,6 @@
   update();
 })();
 </script>
+<nav class="article-side" aria-label="Article sections"><a href="#s1" aria-label="Section 1">1</a><a href="#s2" aria-label="Section 2">2</a></nav><div class="author-end"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="cta"><a href="/">Home</a><a href="/blog.html">Read More Articles</a></div></div>
 </body>
 </html>
