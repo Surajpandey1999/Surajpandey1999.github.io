@@ -1,0 +1,39 @@
+name: Add article navigation and author
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  add:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update article
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('posts/ai-adoption-india.html');s=p.read_text()
+          if 'article-side-nav-v1' in s: raise SystemExit('already done')
+          css='''<style id="article-side-nav-v1">.article-side{position:fixed;left:max(12px,calc(50% - 620px));top:42%;z-index:5;display:flex;flex-direction:column;gap:7px}.article-side a{width:30px;height:30px;display:grid;place-items:center;border:1px solid #38bdf855;border-radius:8px;background:#0b1220dd;color:#9bdcff;font:10px var(--mono);box-shadow:0 5px 18px #0005}.article-side a:hover{transform:translateX(3px);text-decoration:none}@media(max-width:1050px){.article-side{display:none}}.author-end{margin:48px 0 0;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-align:center}.author-end img{width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}.author-end strong{display:block;margin:8px 0 3px}.author-end small{color:var(--muted)}.author-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.author-links a{padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:11px var(--mono)}</style>'''
+          side='<nav class="article-side" aria-label="Article sections">'+''.join(f'<a href="#s{i}">{i}</a>' for i in range(1,10))+'</nav>'
+          import re
+          heads=re.findall(r'<h2[^>]*>(.*?)</h2>',s,re.S)
+          for i,h in enumerate(heads[:9],1):
+            s=s.replace('<h2>'+h+'</h2>',f'<h2 id="s{i}">'+h+'</h2>',1)
+          author='''<div class="author-end"><img src="/images/profile.jpg" alt="Suraj Pandey"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="author-links"><a href="/">Home</a><a href="/blog.html">Read More Articles</a><a href="/">My Identity</a></div></div>'''
+          s=s.replace('</body>',css+side+author+'</body>')
+          p.write_text(s)
+          PY
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add posts/ai-adoption-india.html
+          git commit -m 'Add article side navigation and author footer' || true
+          git push
+      - name: Remove workflow
+        run: |
+          git rm .github/workflows/add-article-nav-author.yml
+          git commit -m 'Remove one-time article navigation workflow'
+          git push
