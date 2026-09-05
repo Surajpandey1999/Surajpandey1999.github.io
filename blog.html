@@ -490,7 +490,314 @@
         @media (max-width: 700px) {
             .nav-container { min-height: 66px; }
             .menu-toggle { display: block; }
-    …4497 tokens truncated…dia still needs to build.</p>
+            .nav-links {
+                position: absolute; top: 66px; left: 0; right: 0; display: none;
+                flex-direction: column; align-items: flex-start; gap: 0; padding: 12px 4%;
+                background: rgba(5, 6, 15, 0.98); border-bottom: 1px solid var(--border);
+            }
+            .nav-links.show { display: flex; }
+            .nav-links li { width: 100%; }
+            .nav-links a { display: block; padding: 12px 0; }
+            .hero { padding: 80px 0 70px; }
+            .hero h1 { letter-spacing: -2.5px; }
+            .tools-wrapper { align-items: stretch; }
+            .search-box { width: 100%; }
+            .filters { width: 100%; }
+            .filter-btn { flex: 1; }
+            .featured-content { padding: 30px; }
+            .article-grid, .ai-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        /* =====================================================
+           AUTHOR STRIP â€” shown right below the hero
+        ====================================================== */
+
+        .author-strip { padding: 0 20px 10px; }
+
+        .author-strip .container {
+            display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+            background: linear-gradient(135deg, rgba(15, 18, 36, 0.96), rgba(9, 10, 24, 0.9));
+            border: 1px solid var(--border); border-radius: 22px;
+            padding: 28px clamp(20px, 4vw, 38px);
+            box-shadow: var(--shadow);
+        }
+
+        .author-strip .author-photo {
+            width: 92px; height: 92px; border-radius: 50%; object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.08);
+            outline: 2px solid var(--primary); outline-offset: 3px;
+            flex-shrink: 0;
+        }
+
+        .author-strip .author-info { flex: 1; min-width: 220px; }
+
+        .author-strip .author-info .a-name {
+            font-family: "Space Grotesk", sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--text);
+        }
+
+        .author-strip .author-info .a-role {
+            color: var(--muted); font-size: 0.88rem; margin-top: 3px; line-height: 1.55; max-width: 560px;
+        }
+
+        .author-strip .a-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+        .author-strip .a-tags span {
+            font-family: "JetBrains Mono", monospace; font-size: 0.65rem; letter-spacing: 0.5px; text-transform: uppercase;
+            color: var(--primary); background: rgba(124, 92, 255, 0.12); border: 1px solid rgba(124, 92, 255, 0.3);
+            padding: 4px 10px; border-radius: 20px;
+        }
+
+        .author-strip .a-actions {
+            display: flex; flex-direction: column; gap: 10px;
+            border-left: 1px solid var(--border); padding-left: 26px; margin-left: auto;
+        }
+
+        .author-strip .a-actions a {
+            font-size: 0.85rem; font-weight: 600; color: var(--muted);
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+        }
+
+        .author-strip .a-actions a:hover { color: var(--text); }
+
+        .author-strip .a-actions a.read-more-cta {
+            background: var(--primary); color: white; padding: 10px 18px; border-radius: 10px;
+            box-shadow: 0 10px 25px -8px rgba(124, 92, 255, 0.55);
+        }
+
+        .author-strip .a-actions a.read-more-cta:hover { background: #6a4ce6; color: white; }
+
+        @media (max-width: 720px) {
+            .author-strip .container { flex-direction: column; text-align: center; }
+            .author-strip .a-tags { justify-content: center; }
+            .author-strip .a-actions { border-left: none; padding-left: 0; margin-left: 0; border-top: 1px solid var(--border); padding-top: 16px; width: 100%; align-items: center; }
+        }
+    </style>
+
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKPR1F26NQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ZKPR1F26NQ');
+    </script>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<header class="navbar">
+    <div class="container nav-container">
+
+        <a href="index.html" class="logo">Suraj<span>.</span></a>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="blog.html" class="active">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+
+    </div>
+</header>
+
+<!-- =====================================================
+     HERO
+====================================================== -->
+
+<section class="hero">
+
+    <canvas id="heroCanvas"></canvas>
+
+    <div class="container hero-content">
+
+        <div class="ai-badge">
+            <span class="pulse"></span>
+            LLM â€¢ GENAI â€¢ DEEP LEARNING â€¢ CLOUD
+        </div>
+
+        <h1>Learn. <span class="gradient-text">Build.</span> Automate.</h1>
+
+        <p>
+            A practical technical blog by Suraj Pandey covering Large Language
+            Models, Generative AI, Deep Learning, Agentic AI, AWS, Cloud
+            Computing, DevOps, Linux, Networking and Cybersecurity.
+        </p>
+
+        <div class="hero-tech">
+            <span class="tech-chip">Large Language Models</span>
+            <span class="tech-chip">Generative AI</span>
+            <span class="tech-chip">Deep Learning</span>
+            <span class="tech-chip">Agentic AI</span>
+            <span class="tech-chip">AWS</span>
+            <span class="tech-chip">DevOps</span>
+            <span class="tech-chip">Linux</span>
+            <span class="tech-chip">Networking</span>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =====================================================
+     AUTHOR STRIP
+====================================================== -->
+
+<section class="author-strip">
+    <div class="container">
+        <img class="author-photo" src="images/profile.jpg" alt="Suraj Pandey">
+        <div class="author-info">
+            <div class="a-name">Suraj Pandey</div>
+            <div class="a-role">M.A. Political Science &amp; Public Administration Â· B.Ed. Â· Cloud/IT enthusiast building expertise in AWS, Azure, GCP and DevOps while writing about LLMs, GenAI and Indian governance.</div>
+            <div class="a-tags">
+                <span>Researcher</span>
+                <span>Writer</span>
+                <span>Cloud &amp; DevOps</span>
+            </div>
+        </div>
+        <div class="a-actions">
+            <a href="#articleGrid" class="read-more-cta"><i class="fa-solid fa-book-open"></i> Read More Articles</a>
+            <a href="mailto:suraj041199@gmail.com"><i class="fa-solid fa-envelope"></i> suraj041199@gmail.com</a>
+            <a href="https://www.linkedin.com/in/suraj-pandey41" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a href="index.html"><i class="fa-solid fa-id-card"></i> Full Portfolio</a>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     SEARCH + FILTER
+====================================================== -->
+
+<section class="tools">
+    <div class="container">
+        <div class="tools-wrapper">
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="searchInput" placeholder="Search LLM, AWS, Linux..." aria-label="Search articles">
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="llm">LLM</button>
+                <button class="filter-btn" data-filter="genai">GenAI</button>
+                <button class="filter-btn" data-filter="dl">Deep Learning</button>
+                <button class="filter-btn" data-filter="agentic">Agentic AI</button>
+                <button class="filter-btn" data-filter="aws">AWS</button>
+                <button class="filter-btn" data-filter="cloud">Cloud</button>
+                <button class="filter-btn" data-filter="devops">DevOps</button>
+                <button class="filter-btn" data-filter="linux">Linux</button>
+                <button class="filter-btn" data-filter="networking">Networking</button>
+                <button class="filter-btn" data-filter="security">Security</button>
+                <button class="filter-btn" data-filter="politics">Politics</button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================
+     FEATURED ARTICLE
+====================================================== -->
+
+<section class="section" id="featuredSection">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Featured</div>
+            <h2 class="section-title">Featured Article</h2>
+        </div>
+
+        <article class="featured-card reveal-up" data-category="politics" data-title="Rapid Artificial Intelligence Adoption Pros Cons and Where Does India Stand">
+
+            <div class="featured-visual">
+                <canvas id="featuredCanvas"></canvas>
+                <div class="ai-core"><i class="fa-solid fa-microchip"></i></div>
+            </div>
+
+            <div class="featured-content">
+                <div class="meta">
+                    <span class="tag">Politics</span>
+                    <span>03 Sep 2026</span>
+                    <span>â€¢</span>
+                    <span>18 min read</span>
+                </div>
+
+                <h2>Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?</h2>
+
+                <p>AI is becoming an economic, political and geopolitical force. Explore its benefits, risks, India's AI ecosystem, Political Science implications and the global race for AI power.</p>
+
+                <a href="posts/ai-adoption-india.html" class="read-link">
+                    Read Article <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </article>
+
+    </div>
+</section>
+
+<!-- =====================================================
+     ARTICLES
+====================================================== -->
+
+<section class="section">
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-label">Knowledge Base</div>
+            <h2 class="section-title">Latest Articles</h2>
+            <p class="section-description">
+                Practical explanations designed for students, IT beginners,
+                cloud engineers and AI/ML enthusiasts.
+            </p>
+        </div>
+
+        <div class="article-grid" id="articleGrid">
+
+            <article class="article-card reveal-up" data-category="llm" data-title="Claude vs ChatGPT vs GPT 6 Astra What the Race Toward AGI Actually Means">
+                <div class="article-top"><i class="fa-solid fa-brain"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Artificial Intelligence</span><span>6 min read</span></div>
+                    <h3>Claude vs ChatGPT vs GPT-6 Astra: What the Race Toward AGI Actually Means</h3>
+                    <p>A practical comparison of Claude, ChatGPT and GPT-6 Astraâ€”and why capable frontier AI is not the same thing as proven AGI.</p>
+                    <div class="article-footer">
+                        <a href="posts/claude-vs-chatgpt-gpt-astra-agi.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Politics â€” Artificial Intelligence adoption in India -->
+            <article class="article-card reveal-up" data-category="politics" data-title="Rapid Artificial Intelligence Adoption Pros Cons and Where Does India Stand">
+                <div class="article-top"><i class="fa-solid fa-microchip"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Politics</span><span>Research Â· 18 min read</span></div>
+                    <h3>Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?</h3>
+                    <p>A research-based analysis of AI adoption, India's AI initiatives, political implications, AI sovereignty and the geopolitics of artificial intelligence.</p>
+                    <div class="article-footer">
+                        <a href="posts/ai-adoption-india.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Politics/Policy â€” Nepal-Himalaya disaster, newest -->
+            <article class="article-card reveal-up" data-category="politics" data-title="Nepal Has Given the Himalayas a Warning India Must Not Wait for the Next Disaster">
+                <div class="article-top"><i class="fa-solid fa-mountain"></i></div>
+                <div class="article-body">
+                    <div class="meta"><span class="tag">Policy</span><span>10 min read</span></div>
+                    <h3>Nepal Has Given the Himalayas a Warning: India Must Not Wait for the Next Disaster</h3>
+                    <p>A science-based case file on the 26 August 2026 Nepal-Tibet glacier collapse â€” what caused it, why India shares the same risk, and the AI/ML-powered early-warning system India still needs to build.</p>
                     <div class="article-footer">
                         <a href="posts/nepal-himalaya-disaster.html" class="read-link">Read Article <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
@@ -1025,3 +1332,4 @@
 
 </body>
 </html>
+
