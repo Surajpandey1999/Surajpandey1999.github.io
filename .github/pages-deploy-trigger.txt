@@ -1,1 +1,0 @@
-AI Observatory deployment verification trigger.
