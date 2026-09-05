@@ -365,6 +365,28 @@
   .hire-cta-actions .primary:hover{ opacity:.88; }
   .hire-cta-actions .secondary{ border:1px solid var(--text); color:var(--text); }
   .hire-cta-actions .secondary:hover{ background:var(--bg2); }
+
+  /* ---- Leave Your Thoughts comment form (Formspree) ---- */
+  .comment-box{ border:1px solid var(--line); border-radius:14px; background:var(--surface); padding:24px; margin:34px 0; }
+  .comment-box h3{ font-family:var(--serif); font-size:20px; margin:0 0 16px; color:var(--text); }
+  .comment-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  @media(max-width:560px){ .comment-grid{ grid-template-columns:1fr; } }
+  .comment-box input, .comment-box textarea{
+    width:100%; box-sizing:border-box; font-family:var(--sans); font-size:14px; color:var(--text);
+    background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:11px 13px;
+  }
+  .comment-box textarea{ min-height:110px; resize:vertical; margin-bottom:14px; }
+  .comment-box input:focus, .comment-box textarea:focus{ outline:none; border-color:var(--accent); }
+  .comment-box-actions{ display:flex; align-items:center; gap:14px; }
+  .comment-box button{
+    font-family:var(--mono); font-size:12.5px; padding:10px 18px; border:none; border-radius:8px;
+    background:var(--accent); color:#fff; cursor:pointer;
+  }
+  .comment-box button:hover{ opacity:.88; }
+  .comment-box button:disabled{ opacity:.55; cursor:default; }
+  .comment-box .status{ font-family:var(--mono); font-size:12px; }
+  .comment-box .status.ok{ color:#1a7a3c; }
+  .comment-box .status.err{ color:#b3261e; }
 </style>
 </head>
 <body>
@@ -655,6 +677,23 @@
   </ul>
   <p class="fig-note">Source-quality note: this analysis prioritises official government releases, primary institutional reports and first-party research publications. News coverage is used for context rather than as the sole basis for headline statistics. Survey percentages retain their original populations and denominators wherever the source makes them explicit. Government projections are not treated as realised outcomes.</p>
 
+  <div class="comment-box">
+    <h3>Leave Your Thoughts</h3>
+    <form id="commentForm">
+      <input type="hidden" name="_subject" value="New comment — AI adoption in India post">
+      <input type="text" name="_gotcha" style="display:none">
+      <div class="comment-grid">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+      <textarea name="message" placeholder="Your Comment" required></textarea>
+      <div class="comment-box-actions">
+        <button type="submit">Post Comment</button>
+        <span class="status" id="commentStatus"></span>
+      </div>
+    </form>
+  </div>
+
   <footer>
     <p>If this analysis is useful, share it with students, researchers, professionals and policy readers.</p>
     <div class="cta share-row">
@@ -875,6 +914,37 @@
   }
   window.addEventListener('scroll', update, { passive:true });
   update();
+})();
+
+// ---- Leave Your Thoughts: Formspree AJAX submit ----
+(function(){
+  const form = document.getElementById('commentForm');
+  if(!form) return;
+  const status = document.getElementById('commentStatus');
+  const btn = form.querySelector('button[type="submit"]');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    btn.disabled = true;
+    status.textContent = 'Posting…';
+    status.className = 'status';
+    fetch('https://formspree.io/f/xwlevzaq', {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(res => {
+      if(res.ok){
+        status.textContent = 'Thanks — your comment has been sent ✓';
+        status.className = 'status ok';
+        form.reset();
+      } else {
+        status.textContent = 'Something went wrong. Please try again.';
+        status.className = 'status err';
+      }
+    }).catch(() => {
+      status.textContent = 'Network error. Please try again.';
+      status.className = 'status err';
+    }).finally(() => { btn.disabled = false; });
+  });
 })();
 </script>
 </body>
