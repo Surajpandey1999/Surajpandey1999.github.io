@@ -354,7 +354,17 @@
     .post-nav-links a:last-child{ border-bottom:none; }
     .post-nav-links a.active::after{ display:none; }
     .post-nav-toggle{ display:flex; }
-  }
+  }  /* ---- short work-with-me CTA ---- */
+  .hire-cta{ border:1px solid var(--line); border-radius:14px; background:var(--surface); padding:22px 24px; margin:34px 0; }
+  .hire-cta .tag{ font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--accent); display:block; margin-bottom:8px; }
+  .hire-cta h3{ font-family:var(--serif); font-size:19px; margin:0 0 8px; }
+  .hire-cta p{ font-size:14px; color:var(--muted); margin:0 0 16px; max-width:560px; }
+  .hire-cta-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+  .hire-cta-actions a{ font-family:var(--mono); font-size:12.5px; padding:9px 16px; border-radius:8px; text-decoration:none; }
+  .hire-cta-actions .primary{ background:var(--accent); color:#fff; }
+  .hire-cta-actions .primary:hover{ opacity:.88; }
+  .hire-cta-actions .secondary{ border:1px solid var(--text); color:var(--text); }
+  .hire-cta-actions .secondary:hover{ background:var(--bg2); }
 </style>
 </head>
 <body>
@@ -656,6 +666,16 @@
     <p style="margin-top:22px;">Research · Policy · Content — Suraj Pandey writes research-led explainers on technology, governance and society.</p>
   </footer>
 
+  <div class="hire-cta">
+    <span class="tag">Open Case — Work With Me</span>
+    <h3>Need research-backed writing or content like this?</h3>
+    <p>I write long-form, well-sourced pieces on technology, policy and governance — plus resumes, LinkedIn profiles and AI-assisted content for professionals and businesses.</p>
+    <div class="hire-cta-actions">
+      <a class="primary" href="/services.html">See services →</a>
+      <a class="secondary" href="/contact.html">Get in touch →</a>
+    </div>
+  </div>
+
   <!-- Author identity + related articles + read-more (bottom, single clean block) -->
   <div class="author-end">
     <img src="/images/profile.jpg" alt="Suraj Pandey">
@@ -663,7 +683,7 @@
     <small>Political Science · AI · Technology &amp; Geopolitics</small>
     <div class="author-links">
       <a href="/">Home</a>
-      <a href="/">My Identity</a>
+      <a href="/about.html">My Identity</a>
       <a href="/blog.html">Read More Articles</a>
     </div>
   </div>
