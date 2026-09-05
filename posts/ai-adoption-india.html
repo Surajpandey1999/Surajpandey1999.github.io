@@ -65,13 +65,43 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Fraunces:ital,opsz,wght@1,9..144,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#080b14; --bg2:#0b0f1a; --surface:#101827; --line:#ffffff1c;
-    --text:#eef3fb; --muted:#93a2ba;
-    --accent:#38bdf8; --accent-dim:#38bdf822; --gold:#f5b95a;
+    --bg:#f7f4ee; --bg2:#f1ede4; --surface:#fffdf8; --line:#e2dcd0;
+    --text:#1c1c1a; --muted:#6d6a63;
+    --accent:#0f6f92; --accent-dim:#0f6f9214; --gold:#9a5b13;
     --serif:'Fraunces',serif; --sans:'Space Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
   }
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.65; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); line-height:1.65; position:relative; }
+
+  /* ---- unique dossier-grid background layer ---- */
+  .bg-field{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    background:
+      radial-gradient(680px 480px at 12% -6%, #0f6f9214, transparent 60%),
+      radial-gradient(620px 460px at 96% 18%, #9a5b1310, transparent 60%),
+      radial-gradient(700px 520px at 50% 112%, #0f6f920f, transparent 60%),
+      linear-gradient(var(--bg), var(--bg2) 55%, var(--bg));
+  }
+  .bg-field::before{
+    content:""; position:absolute; inset:-2px;
+    background-image:
+      linear-gradient(#00000009 1px, transparent 1px),
+      linear-gradient(90deg, #00000009 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(1100px 800px at 50% 20%, #000 0%, transparent 78%);
+    -webkit-mask-image:radial-gradient(1100px 800px at 50% 20%, #000 0%, transparent 78%);
+    animation:bgDrift 26s linear infinite;
+  }
+  .bg-field::after{
+    content:""; position:absolute; width:520px; height:520px; border-radius:50%;
+    left:50%; top:6%; transform:translateX(-50%);
+    background:radial-gradient(circle, #0f6f921a, transparent 70%);
+    filter:blur(10px); animation:bgPulse 7s ease-in-out infinite;
+  }
+  @keyframes bgDrift{ from{ background-position:0 0, 0 0; } to{ background-position:42px 42px, 42px 42px; } }
+  @keyframes bgPulse{ 50%{ opacity:.55; transform:translateX(-50%) scale(1.06); } }
+  @media(prefers-reduced-motion:reduce){ .bg-field::before, .bg-field::after{ animation:none; } }
+  .wrap, .post-nav, #readProgress, .article-side{ position:relative; z-index:1; }
   ::selection{ background:var(--accent); color:#080b14; }
   a{ color:var(--accent); text-decoration:none; }
   a:hover{ text-decoration:underline; }
@@ -101,25 +131,36 @@
     animation:scan 5s linear infinite}
   .ai3d-core{font:800 52px/1 Arial;color:#fff;transform:rotateX(12deg) rotateY(-18deg);
     text-shadow:0 0 25px #38bdf8;animation:aifloat 3s ease-in-out infinite}
-  .ai3d span{position:absolute;padding:7px 11px;border:1px solid #38bdf855;
+  .ai3d button.ai3d-node{position:absolute;padding:7px 11px;border:1px solid #38bdf855;
     border-radius:9px;background:#101827cc;color:#9bdcff;font:600 10px Arial;
-    box-shadow:0 0 18px #38bdf822;animation:orb 5s ease-in-out infinite}
-  .ai3d span:nth-child(2){top:18%;left:8%}.ai3d span:nth-child(3){top:15%;right:10%}
-  .ai3d span:nth-child(4){bottom:18%;left:12%}.ai3d span:nth-child(5){bottom:15%;right:9%}
-  .ai3d span:nth-child(6){top:48%;left:3%}.ai3d span:nth-child(7){top:48%;right:3%}
+    box-shadow:0 0 18px #38bdf822;animation:orb 5s ease-in-out infinite;
+    cursor:pointer;transition:transform .18s ease,border-color .18s,box-shadow .18s,background .18s;}
+  .ai3d button.ai3d-node:hover, .ai3d button.ai3d-node:focus-visible{
+    border-color:#38bdf8;color:#e7f8ff;box-shadow:0 0 24px #38bdf877;transform:scale(1.12);outline:none;}
+  .ai3d button.ai3d-node.is-active{
+    background:#38bdf8;color:#04141f;border-color:#e7f8ff;box-shadow:0 0 26px #38bdf8cc;transform:scale(1.14);}
+  .ai3d button.ai3d-node:nth-child(2){top:18%;left:8%}.ai3d button.ai3d-node:nth-child(3){top:15%;right:10%}
+  .ai3d button.ai3d-node:nth-child(4){bottom:18%;left:12%}.ai3d button.ai3d-node:nth-child(5){bottom:15%;right:9%}
+  .ai3d button.ai3d-node:nth-child(6){top:48%;left:3%}.ai3d button.ai3d-node:nth-child(7){top:48%;right:3%}
   @keyframes aifloat{50%{transform:rotateX(-8deg) rotateY(18deg) translateY(-8px)}}
   @keyframes orb{50%{transform:translateY(-9px) rotateY(12deg)}}
   @keyframes scan{to{transform:translateX(100%) rotate(5deg)}}
-  .ai3d-caption{ text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:-20px; margin-bottom:30px; }
+  .ai3d-caption{ text-align:center; font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:-20px; margin-bottom:14px; }
+  .ai3d-info{
+    border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:14px 18px;
+    margin:0 0 30px; font-size:13.5px; color:var(--text); min-height:20px; transition:opacity .15s ease;
+  }
+  .ai3d-info .hint{ color:var(--muted); font-family:var(--mono); font-size:11.5px; }
+  .ai3d-info b{ color:var(--accent); font-family:var(--mono); font-size:11px; letter-spacing:.04em; display:block; margin-bottom:4px; }
   @media(prefers-reduced-motion:reduce){.ai3d *,.ai-node{animation:none!important}}
 
   /* ---- article ---- */
   h2{ font-family:var(--serif); font-weight:600; font-size:25px; margin:46px 0 14px; }
   h3{ font-family:var(--serif); font-weight:600; font-size:18px; margin:22px 0 8px; color:var(--gold); }
-  p{ color:#cfd7e6; font-size:16px; margin:0 0 16px; }
+  p{ color:var(--text); font-size:16px; margin:0 0 16px; }
   .research-q{ background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:16px 20px; margin:24px 0; font-style:italic; color:var(--text); }
   ul,ol{ padding-left:22px; }
-  li{ color:#cfd7e6; font-size:16px; margin-bottom:8px; }
+  li{ color:var(--text); font-size:16px; margin-bottom:8px; }
 
   /* ---- stat strip ---- */
   .stat-strip{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin:28px 0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); }
@@ -217,7 +258,7 @@
   .related-grid a span{ display:block; margin-top:5px; font-family:var(--mono); font-size:11px; color:var(--muted); font-weight:400; }
 
   /* ---- reading progress bar ---- */
-  #readProgress{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:50;
+  #readProgress{ position:fixed; top:0; left:0; height:3px; width:0%; z-index:70;
     background:linear-gradient(90deg,var(--accent),var(--gold)); transition:width .1s linear; }
 
   /* ---- abstract box (academic style) ---- */
@@ -226,7 +267,7 @@
     background:var(--surface); position:relative;
   }
   .abstract .ab-label{ font-family:var(--mono); font-size:11px; color:var(--gold); letter-spacing:.08em; margin-bottom:10px; }
-  .abstract p{ margin:0; font-size:14.5px; color:#cfd7e6; }
+  .abstract p{ margin:0; font-size:14.5px; color:var(--text); }
   .abstract .ab-meta{ display:flex; flex-wrap:wrap; gap:16px; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); font-family:var(--mono); font-size:11px; color:var(--muted); }
   .abstract .ab-meta b{ color:var(--text); }
 
@@ -242,7 +283,7 @@
 
   .spec-table{ width:100%; border-collapse:collapse; margin:22px 0; font-size:13.5px; }
   .spec-table th{ text-align:left; font-family:var(--mono); font-size:11px; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--line); }
-  .spec-table td{ padding:11px 10px; border-bottom:1px solid var(--line); color:#cfd7e6; }
+  .spec-table td{ padding:11px 10px; border-bottom:1px solid var(--line); color:var(--text); }
   .spec-table td.mono{ font-family:var(--mono); color:var(--accent); font-size:12.5px; }
 
   .framework-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:22px 0; }
@@ -259,7 +300,7 @@
   /* ---- cite this article ---- */
   .cite-box{ margin:24px 0; padding:18px 20px; border:1px solid var(--line); border-radius:12px; background:var(--surface); }
   .cite-box h4{ margin:0 0 12px; font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.04em; }
-  .cite-box .cite-line{ display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; font-size:12.5px; color:#cfd7e6; }
+  .cite-box .cite-line{ display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; font-size:12.5px; color:var(--text); }
   .cite-box .cite-line b{ color:var(--gold); font-family:var(--mono); font-size:10.5px; min-width:42px; }
   .cite-box button{
     font-family:var(--mono); font-size:11px; padding:4px 9px; border:1px solid var(--line); border-radius:6px;
@@ -274,11 +315,64 @@
     background:transparent; color:var(--text); cursor:pointer;
   }
   .share-row a:hover, .share-row button:hover{ background:var(--accent-dim); text-decoration:none; }
-</style>
 
-<style id="article-side-nav-v2">.article-side{position:fixed;left:max(14px,calc(50% - 455px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:7px}.article-side a{width:26px;height:26px;display:grid;place-items:center;border:1px solid #ffffff22;border-radius:7px;background:#101827dd;color:#93a2ba;font:11px var(--mono);text-decoration:none}.article-side a:hover{color:var(--accent);border-color:#38bdf855}.author-end{margin-top:55px;padding:24px 0;border-top:1px solid var(--line);text-align:center}.author-end strong{display:block;color:var(--text);font-family:var(--serif);font-size:20px}.author-end small{color:var(--muted)}.author-end .cta{margin-top:15px}@media(max-width:900px){.article-side{left:8px}}@media(max-width:600px){.article-side{position:fixed;left:7px;top:auto;bottom:12px;transform:none;flex-direction:row;background:#080b14dd;padding:5px;border:1px solid #ffffff18;border-radius:10px}.article-side a{width:23px;height:23px;font-size:10px}.author-end{padding-bottom:70px}}
-</style></head>
+  /* ---- top case-file navigation bar (stays dark console-style, independent of page theme) ---- */
+  .post-nav{
+    position:sticky; top:0; z-index:60; background:#080b14cc; backdrop-filter:blur(10px) saturate(140%);
+    border-bottom:1px solid #ffffff1c;
+  }
+  .post-nav-inner{
+    max-width:760px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .post-nav-brand{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.06em; color:#eef3fb; text-decoration:none;
+    display:flex; align-items:center; gap:8px; white-space:nowrap;
+  }
+  .post-nav-brand:hover{ text-decoration:none; color:#eef3fb; }
+  .post-nav-brand .dot{ width:7px; height:7px; border-radius:50%; background:#38bdf8; box-shadow:0 0 8px #38bdf8; flex-shrink:0; }
+  .post-nav-brand b{ font-weight:600; }
+  .post-nav-brand span{ color:#93a2ba; font-weight:400; }
+  .post-nav-links{ display:flex; align-items:center; gap:22px; font-family:var(--mono); font-size:12.5px; }
+  .post-nav-links a{ color:#93a2ba; text-decoration:none; letter-spacing:.02em; transition:color .18s; padding:4px 0; position:relative; }
+  .post-nav-links a:hover{ color:#eef3fb; text-decoration:none; }
+  .post-nav-links a.active{ color:#38bdf8; }
+  .post-nav-links a.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; background:#38bdf8; border-radius:2px;
+  }
+  .post-nav-toggle{
+    display:none; background:transparent; border:1px solid #ffffff22; border-radius:8px; color:#eef3fb;
+    width:34px; height:34px; font-size:15px; cursor:pointer; align-items:center; justify-content:center;
+  }
+  @media(max-width:680px){
+    .post-nav-links{
+      position:absolute; top:100%; left:0; right:0; flex-direction:column; align-items:flex-start; gap:0;
+      background:#0b0f1af5; border-bottom:1px solid #ffffff1c; padding:6px 24px;
+      max-height:0; overflow:hidden; transition:max-height .22s ease;
+    }
+    .post-nav-links.open{ max-height:320px; padding:10px 24px 16px; }
+    .post-nav-links a{ padding:10px 0; width:100%; border-bottom:1px solid #ffffff1c; }
+    .post-nav-links a:last-child{ border-bottom:none; }
+    .post-nav-links a.active::after{ display:none; }
+    .post-nav-toggle{ display:flex; }
+  }
+</style>
+</head>
 <body>
+<div class="bg-field" aria-hidden="true"></div>
+<header class="post-nav" role="banner">
+  <div class="post-nav-inner">
+    <a href="/" class="post-nav-brand"><span class="dot"></span><b>Suraj Pandey</b><span>· Case File</span></a>
+    <nav class="post-nav-links" id="postNavLinks" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/services.html">Services</a>
+      <a href="/portfolio.html">Portfolio</a>
+      <a href="/blog.html" class="active">Blog</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+    <button class="post-nav-toggle" id="postNavToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  </div>
+</header>
 <div id="readProgress"></div>
 <div class="wrap">
 
@@ -318,13 +412,18 @@
   <p>The lowered barrier to experimentation is genuinely useful, but it quietly changes what the policy problem is. Organisations no longer get to decide <em>whether</em> they will encounter AI — that decision has already been made for them by every employee with a laptop and a browser. What remains within their control is whether that contact happens carefully enough to create real value, instead of letting unreliable output, privacy exposure, embedded bias, or unmonitored automation get ahead of human judgment.</p>
   <p>Stanford HAI's 2026 AI Index puts a number on how far this has already spread: organisational AI adoption reached 88% in 2025, up from 78% the year before — a global figure, not an India-specific one, but a useful marker of how quickly the baseline has moved.</p>
 
-  <!-- ANIMATED 3D VISUAL 1: AI CORE + ORBITING LAYERS -->
-  <div class="ai3d">
+  <!-- ANIMATED 3D VISUAL 1: AI CORE + ORBITING LAYERS (click a layer for details) -->
+  <div class="ai3d" id="ai3d-1">
     <div class="ai3d-core">AI</div>
-    <span>DATA</span><span>MODEL</span><span>AGENT</span>
-    <span>POLICY</span><span>VALUE</span><span>GOVERNANCE</span>
+    <button type="button" class="ai3d-node" data-node="data">DATA</button>
+    <button type="button" class="ai3d-node" data-node="model">MODEL</button>
+    <button type="button" class="ai3d-node" data-node="agent">AGENT</button>
+    <button type="button" class="ai3d-node" data-node="policy">POLICY</button>
+    <button type="button" class="ai3d-node" data-node="value">VALUE</button>
+    <button type="button" class="ai3d-node" data-node="governance">GOVERNANCE</button>
   </div>
   <div class="ai3d-caption">the six layers this article keeps returning to — data feeds models, models become agents, and agents only create durable value inside a policy and governance frame</div>
+  <div class="ai3d-info" id="ai3d-info-1"><span class="hint">Tap a layer above to see what it means →</span></div>
 
   <h2 id="s2">2. Where AI is already doing real work</h2>
   <p>AI is not arriving industry by industry; it's spreading task by task, inside jobs that already exist. Document drafting and summarising, coding assistance, customer support, search and internal knowledge retrieval, translation, demand forecasting, fraud detection, medical decision support, classroom tools, industrial quality inspection, and workflow automation are now common, unremarkable use cases rather than pilot projects.</p>
@@ -392,13 +491,18 @@
   <h2 id="s11">11. AI and the new geopolitics</h2>
   <p>AI capability is increasingly inseparable from computing hardware, energy supply, data, advanced semiconductors, cloud infrastructure, research talent and capital — together forming what's best described as a strategic stack. Countries that control multiple layers of that stack gain disproportionate room to set standards, protect critical systems, and shape global technology markets on their own terms.</p>
 
-  <!-- ANIMATED 3D VISUAL 2: AI CORE REPEATED FOR THE GEOPOLITICAL STACK -->
-  <div class="ai3d">
+  <!-- ANIMATED 3D VISUAL 2: AI CORE REPEATED FOR THE GEOPOLITICAL STACK (click a layer for details) -->
+  <div class="ai3d" id="ai3d-2">
     <div class="ai3d-core">AI</div>
-    <span>DATA</span><span>MODEL</span><span>AGENT</span>
-    <span>POLICY</span><span>VALUE</span><span>GOVERNANCE</span>
+    <button type="button" class="ai3d-node" data-node="data">DATA</button>
+    <button type="button" class="ai3d-node" data-node="model">MODEL</button>
+    <button type="button" class="ai3d-node" data-node="agent">AGENT</button>
+    <button type="button" class="ai3d-node" data-node="policy">POLICY</button>
+    <button type="button" class="ai3d-node" data-node="value">VALUE</button>
+    <button type="button" class="ai3d-node" data-node="governance">GOVERNANCE</button>
   </div>
   <div class="ai3d-caption">the same stack, read geopolitically — every layer a country doesn't control is a layer of leverage it hands to someone else</div>
+  <div class="ai3d-info" id="ai3d-info-2"><span class="hint">Tap a layer above to see what it means →</span></div>
 
   <p>For India, this doesn't mean matching the largest AI powers category for category — an unrealistic and probably wasteful goal. It means identifying which layers are simultaneously strategically important and economically realistic to build: compute access, semiconductor resilience, research institutions, open technical ecosystems, Indian-language capability, public-interest datasets, and trusted independent evaluation.</p>
 
@@ -508,7 +612,7 @@
   <p class="muted">Future research directions this analysis suggests: sector-disaggregated longitudinal panels tracking the same organisations across adoption and value stages; platform-agnostic measurement of agentic AI usage; and causal (not only correlational) study designs isolating AI's productivity contribution from concurrent variables like remote work and macroeconomic conditions.</p>
 
 
-  <h2 id="s1">Frequently asked questions</h2>
+  <h2 id="faq">Frequently asked questions</h2>
   <div class="faq">
     <details><summary>Is India leading AI adoption?</summary><p>India ranks among the strongest adopters in several recent workforce measures. Microsoft's 2026 survey classified 32% of surveyed Indian AI users as Frontier Professionals, against 16% globally — but that describes AI-using knowledge workers in the sample, not 32% of India's entire workforce.</p></details>
     <details><summary>How much is India spending on the IndiaAI Mission?</summary><p>The approved outlay is ₹10,371.92 crore over five years.</p></details>
@@ -524,7 +628,7 @@
     <div class="cite-line" id="citeMla"><b>MLA</b><span>Pandey, Suraj. "Rapid Artificial Intelligence Adoption: Pros, Cons and Where Does India Stand?" <i>Suraj Pandey</i>, 4 Sept. 2026, surajpandey1999.github.io/posts/ai-adoption-india.html.</span><button onclick="navigator.clipboard.writeText(document.getElementById('citeMla').innerText.replace('Copy',''))">Copy</button></div>
   </div>
 
-  <h2 id="s2">References (APA 7th edition)</h2>
+  <h2 id="refs">References (APA 7th edition)</h2>
   <p class="fig-note" style="margin:0 0 10px;">Primary and institutional sources are prioritised where available. Web sources are dated to the version or release used for this analysis.</p>
   <ul class="refs">
     <li><i>IndiaAI.</i> (2026). AIKosh: National AI datasets, models and resources platform. Ministry of Electronics and Information Technology, Government of India. <a href="https://indiaai.gov.in/" target="_blank" rel="noopener">indiaai.gov.in</a></li>
@@ -662,7 +766,48 @@
   step();
 })();
 
-// ---- ai3d visuals already animate via pure CSS, no JS needed ----
+// ---- ai3d visuals already animate via pure CSS; click nodes reveal info ----
+(function(){
+  const info = {
+    data: "The raw fuel — text, images, sensor and transaction records. Whoever controls the data controls what any model downstream can learn.",
+    model: "The trained system itself — the weights and architecture that turn data into predictions or generated output.",
+    agent: "A model wired to tools and multi-step reasoning, so it can act — retrieve, call software, and finish a task, not just answer once.",
+    policy: "The rules and institutional guardrails — law, procurement, standards — that decide how a model or agent is allowed to operate.",
+    value: "The actual measurable outcome — faster, cheaper, better decisions — as opposed to usage numbers that only show adoption.",
+    governance: "Oversight and accountability — audit, redress, and monitoring that keep the whole stack safe, fair and correctable."
+  };
+  document.querySelectorAll('.ai3d').forEach(diagram => {
+    const panel = document.getElementById(diagram.id.replace('ai3d-', 'ai3d-info-'));
+    if(!panel) return;
+    diagram.querySelectorAll('.ai3d-node').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.node;
+        const already = btn.classList.contains('is-active');
+        diagram.querySelectorAll('.ai3d-node').forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-pressed','false'); });
+        if(already){
+          panel.innerHTML = '<span class="hint">Tap a layer above to see what it means →</span>';
+          return;
+        }
+        btn.classList.add('is-active'); btn.setAttribute('aria-pressed','true');
+        panel.innerHTML = '<b>' + btn.textContent + '</b>' + (info[key] || '');
+      });
+    });
+  });
+})();
+
+// ---- top nav mobile toggle ----
+(function(){
+  const btn = document.getElementById('postNavToggle');
+  const links = document.getElementById('postNavLinks');
+  if(!btn || !links) return;
+  btn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    links.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
+  }));
+})();
 
 // ---- left sidebar: build numbered links from every id="sN" heading ----
 (function buildArticleSideNav(){
@@ -712,6 +857,5 @@
   update();
 })();
 </script>
-<nav class="article-side" aria-label="Article sections"><a href="#s1" aria-label="Section 1">1</a><a href="#s2" aria-label="Section 2">2</a></nav><div class="author-end"><strong>Suraj Pandey</strong><small>Political Science • AI • Technology &amp; Geopolitics</small><div class="cta"><a href="/">Home</a><a href="/blog.html">Read More Articles</a></div></div>
 </body>
 </html>
